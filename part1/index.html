@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <script type="text/javascript" src="../global/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="../global/Util.js"></script>
+    <script type="text/javascript" src="../global/Accelerometer.js"></script>
+    <script type="text/javascript" src="AccelerometerGame.js"></script>
+    <script>
+        $(document).ready(function(){
+            var accelGame = new AccelerometerGame();
+            
+            $('#randomize').click(function(e) {
+                e.preventDefault();
+                accelGame.randomize();
+            });
+
+            $('#restart').click(function(e) {
+                e.preventDefault();
+                accelGame.restart();
+            });
+
+            $('#winRound').click(function(e) {
+                e.preventDefault();
+                accelGame.winRound();
+            });
+
+        });
+    </script>
+</head>
+<body>
+    <h3>Score: <span id="score">0</span></h3>
+    <hr>
+    <table>
+        <tr>
+            <th>Dimension</th>
+            <th>Target</th>
+            <th>Observed</th>
+            <th>Difference</th>
+        </tr>
+        <tr id="xfields">
+            <td>x</td>
+            <td class="targ">0</td>
+            <td class="obs">0</td>
+            <td class="diff">0</td>
+        </tr>
+        <tr id="yfields">
+            <td>y</td>
+            <td class="targ">0</td>
+            <td class="obs">0</td>
+            <td class="diff">0</td>
+        </tr>
+        <tr id="zfields">
+            <td>z</td>
+            <td class="targ">0</td>
+            <td class="obs">0</td>
+            <td class="diff">0</td>
+        </tr>
+    </table>
+    <input type="button" id="randomize"  value="Randomize" />
+    <input type="button" id="restart" value="Start Over" />
+    <input type="button" id="winRound" value="Score" />
+</body>
+</html>
