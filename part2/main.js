@@ -12,27 +12,53 @@ $(document).ready(function() {
 	// optional for geolocation.watchPosition
 	var options = {
 	    enableHighAccuracy: true,
-	    maximumAge: 30000,
-	    timeout: 27000
+	    maximumAge: 250,
+	    timeout: 10000
 	};
     
 	
-	navigator.geolocation.getCurrentPosition(successCallback, errCallback);
+	navigator.geolocation.getCurrentPosition(successCallback, errCallback, options);
 	
     var watchId;
     
-	$('#locationNow').click(function () {
-	   if(this.hasClass('watching')) {
-		    watchId = navigator.geolocation.getCurrentPosition(successCallback, errCallback);
+	$('#locationNow').click(function(e) {
+	   if(!$(this).hasClass('watching')) {
+		    watchId = navigator.geolocation.watchPosition(successCallback, errCallback, options);
+		    $(this).attr('value', 'Stop watching position');
 	   }
 	   else {
             navigator.geolocation.clearWatch(watchId);
+            $(this).attr('value', 'Start watching position');
 	   }
-	   this.toggleClass('watching');
+	   $(this).toggleClass('watching');
 	});
 
 	function successCallback(position) {
-	    console.log(position);
+		console.log(position);
+		var index = $('#locTable tr').length - 1;
+		var lat = position.coords.latitude;
+		var lng = position.coords.longitude;
+		var acc = position.coords.accuracy;
+		var spd = position.coords.speed;
+		var alt = position.coords.altitude;
+		var altacc = position.coords.altitudeAccuracy;
+
+	    $('#locTable tr:last').after(
+	    	'<tr><td>' + 
+	    	index + 
+	    	'</td><td>' + 
+	    	lat + 
+	    	'</td><td>' +
+	    	lng +
+	    	'</td><td>' + 
+	    	acc + 
+	    	'</td><td>' +
+	    	spd +
+	    	'</td><td>' +
+	    	alt +
+	    	'</td><td>' +
+	    	altacc +
+	    	'</td></tr>');
 	}
 
 	function errCallback(err) {

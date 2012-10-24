@@ -38,7 +38,9 @@ AccelerometerGame.prototype.initAccelerometer = function(){
 AccelerometerGame.prototype.initTimer = function() {
 	var ref = this;
 	this.timerTimeout = setInterval(function() {
-		ref.changeScore(-1);
+		if(!ref.isWinState) {
+			ref.changeScore(-1);
+		}
 	}, 1000);
 }
 
