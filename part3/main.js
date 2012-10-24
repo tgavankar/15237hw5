@@ -10,16 +10,33 @@ var TaskList = function(){
 }
 
 TaskList.prototype.setup = function() {
+	
+
+	 this.eventType = "click";
+
+	if(this.isEventSupported("touchend")) {
+	 	this.eventType = "touchend";
+	 }
+
 	var ref = this;
 	$('#taskform').submit(function(e) {
 		e.preventDefault();
 		ref.addTask($('#task').val());
 		$('#task').val('');
 		return false;
+	});
+
+	$('#submit').on(this.eventType, function(e) {
+		e.preventDefault();
+		$('#taskform').submit();
 	})
 
-	$('.remove').live('click', function(e) {
-		ref.removeTask($(e.target).parent().attr('id'));
+	$('.removehandler').live(this.eventType, function(e) {
+		var parent = $(e.target).parent();
+		if(parent.hasClass('remove')) {
+			parent = parent.parent();
+		}
+		ref.removeTask(parent.attr('id'));
 	});
 	
 	if(typeof(localStorage) !== "undefined") {
@@ -31,6 +48,7 @@ TaskList.prototype.setup = function() {
 	
 	this.getLocalStorage();
 	
+	alert(this.eventType);
 }
 
 TaskList.prototype.setLocalStorage = function(tasks, nextId) {
@@ -59,7 +77,7 @@ TaskList.prototype.updateTasks = function() {
 		 .addClass('taskentry')
 		 .addClass('animate')
 		 .addClass('show')
-		 .append($('<span>X</span>').addClass('remove'));
+		 .append($('<div class="removehandler"><div class="removehandler">X</div></div>').addClass('remove'));
 		$('#tasklist').append(n);
 	}
 	
@@ -72,7 +90,7 @@ TaskList.prototype.addTask = function(task) {
 	 .text(task)
 	 .addClass('taskentry')
 	 .addClass('animate')
-	 .append($('<span>X</span>').addClass('remove'));
+	 .append($('<div class="removehandler"><div class="removehandler">X</div></div>').addClass('remove'));
 	$('#tasklist').append(n);
 
 	this.nextTaskId++;
@@ -93,3 +111,22 @@ TaskList.prototype.removeTask = function(id) {
 	this.setLocalStorage(this.tasks, this.nextTaskId);
 }
 
+TaskList.prototype.isEventSupported = (function(){
+	   var TAGNAMES = {
+	     'select':'input','change':'input',
+	     'submit':'form','reset':'form',
+	     'error':'img','load':'img','abort':'img'
+	   }
+	   function isEventSupported(eventName) {
+	     var el = document.createElement(TAGNAMES[eventName] || 'div');
+	     eventName = 'on' + eventName;
+	     var isSupported = (eventName in el);
+	     if (!isSupported) {
+	       el.setAttribute(eventName, 'return;');
+	       isSupported = typeof el[eventName] == 'function';
+	     }
+	     el = null;
+	     return isSupported;
+	   }
+	   return isEventSupported;
+	 })();
