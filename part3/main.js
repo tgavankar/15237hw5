@@ -10,9 +10,7 @@ var TaskList = function(){
 }
 
 TaskList.prototype.setup = function() {
-	
-
-	 this.eventType = "click";
+	this.eventType = "click";
 
 	if(this.isEventSupported("touchend")) {
 	 	this.eventType = "touchend";
@@ -47,8 +45,6 @@ TaskList.prototype.setup = function() {
 	}
 	
 	this.getLocalStorage();
-	
-	alert(this.eventType);
 }
 
 TaskList.prototype.setLocalStorage = function(tasks, nextId) {
@@ -60,7 +56,6 @@ TaskList.prototype.setLocalStorage = function(tasks, nextId) {
 
 TaskList.prototype.getLocalStorage = function() {
 	if(this.hasStorage && window.localStorage['taskListData'] !== undefined) {
-		console.log(window.localStorage['taskListData']);
 		var data = JSON.parse(window.localStorage['taskListData']);
 		this.tasks = data.tasks;
 		this.nextTaskId = data.nextId;

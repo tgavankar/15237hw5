@@ -88,18 +88,3 @@ window.util.makeAspectRatioCanvas = function(parent, aspectRatio){
     canvas.html("Your browser doesn't support canvas :(");
     return canvas;
 };
-
-window.util.randInt = function(to, from) {
-    return Math.floor(Math.random() * (to - from + 1) + from);
-}
-
-var nop = function() { };
-if (window.navigator === undefined) {
-    window.navigator = {};
-}
-if (window.navigator.notification === undefined) {
-    window.navigator.notification = {};
-}
-if (window.navigator.notification.vibrate === undefined) {
-    window.navigator.notification.vibrate = nop;
-}
